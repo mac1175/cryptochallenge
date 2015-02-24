@@ -1,6 +1,6 @@
 from collections import Counter
 arr = []
-with open("c:\\4.txt", "r") as ins:
+with open("4.txt", "r") as ins:
     full_string = ''.join(ins.read().splitlines())
 
 print '=' *50
@@ -10,7 +10,10 @@ print str(length)+  ' lines'
 common = Counter(full_string).most_common(1)[0][0]
 print common
 for i  in range(length/step):
-   a = full_string[i*step:(i*step)+step]
+   start= i*step
+   end=start+step
+   a = full_string[start:end]
+   c=Counter(a).most_common(1)[0][0]
    #print a
-   print ''.join(chr(ord(x) ^ ord(Counter(a).most_common(1)[0][0])) for x in a.decode('hex'))
+   print ''.join(chr(ord(x) ^ ord(c)) for x in a.decode('hex'))
     
