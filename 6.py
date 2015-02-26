@@ -1,5 +1,6 @@
 from collections import Counter
 from operator import itemgetter
+import re
  
 def hamming_bitdiff(c1, c2):
     """Return the Hamming distance between equal-length sequences"""
@@ -67,6 +68,9 @@ def decrypt_string(key,target_string):
         print ''.join(chr(ord(k) ^ ord(c)) for k,c in  zip(key,target_string[start:end]))
 
 
+def v(t):
+    return t[1]
+
 
 
 with open("6.txt","r") as f:
@@ -80,8 +84,19 @@ with open("6.txt","r") as f:
 print distances
 
 blocks=transpose_blocks(29,target_string)
-
+blk_results=[]
 for blk in blocks:
+    results=[]
     for i in range(0,256):
-        print single_byte_xor(i,''.join(blk))
+        result=re.sub("[a-zA-Z0-9]+","",single_byte_xor(i,''.join(blk)))
+        results.append((i,len(result),result))
+    blk_results.append(sorted(results,key=v)[4])
+
+key=''
+print blk_results
+for i in range(0,29):
+    key = key + chr(blk_results[i][0])
+print 'key:'+key
+print decrypt_string(key,target_string)
+
 
